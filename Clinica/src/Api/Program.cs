@@ -1,4 +1,5 @@
 using Persistence;
+using Externals;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -11,6 +12,7 @@ builder.Services.AddOpenApi();
 
 /*Inyección del servicio Persistencia */
 builder.Services.AddPersistence();
+builder.Services.AddExternals();
 var app = builder.Build();
 
 

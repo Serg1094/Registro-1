@@ -9,24 +9,17 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Persistence.Data
+namespace Persistence.Configs
 {
-    public class ApplicationDbContext : DbContext
+    public class Medico_EspecialidadConfigType : IEntityTypeConfiguration<Medico_Especialidad>
     {
-        public DbSet<Pacientes> Pacientes { get; set; }
-        public DbSet<Contacto_Emergencia> ContactosEmergencia { get; set; }
-        public DbSet<Medicos> Medicos { get; set; }
-        public DbSet<Especialidades> Especialidades { get; set; }
-        public DbSet<Medico_Especialidad> MedicosEspecialidades { get; set; }
-
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
+        public void Configure(EntityTypeBuilder<Medico_Especialidad> builder)
         {
-        }
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);
-            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+            builder.ToTable("Medico_Especialidad");
+            builder.HasKey(x => new { x.MedicoID, x.EspecialidadID });
+            builder.Property(x => x.MedicoID).HasColumnName("MedicoID");
+            builder.Property(x => x.EspecialidadID).HasColumnName("EspecialidadID");
+            builder.Property(x => x.Principal).HasColumnName("Principal");
         }
     }
 }
