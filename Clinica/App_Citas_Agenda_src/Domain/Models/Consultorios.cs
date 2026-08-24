@@ -1,0 +1,19 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Domain.Models
+{
+    public class Consultorio
+    {
+        public int ConsultorioID { get; set; }
+        public int SucursalID { get; set; }
+        public int? AreaID { get; set; }
+        public string? Codigo { get; set; }
+        public string? Nombre { get; set; }
+        public string? Piso { get; set; }
+        public bool Activo { get; set; }
+    }
+}
