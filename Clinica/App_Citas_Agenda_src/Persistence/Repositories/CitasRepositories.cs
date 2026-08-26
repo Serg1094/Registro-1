@@ -21,18 +21,13 @@ namespace Persistence.Repositories
 
         public async Task<List<Cita>> GetCitasAsync()
         {
-            return await _context.ListaCitas.ToListAsync();
+            return await _context.ListaCitas.Take(100).ToListAsync();
         }
 
-        public async Task<Cita?> GetCitaByIdAsync(long id)
-        {
-            return await _context.ListaCitas
-                .FirstOrDefaultAsync(x => x.CitaID == id);
-        }
-
+        
         public async Task<List<Cita>> GetCitasAsync(int TotalRegistro = 100)
         {
-            return await _context.ListaCitas.ToListAsync();
+            return await _context.ListaCitas.Take(TotalRegistro).ToListAsync();
         }
 
         public async Task AddCitas(Cita citas)

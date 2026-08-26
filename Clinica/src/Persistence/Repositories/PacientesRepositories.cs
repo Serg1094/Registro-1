@@ -21,13 +21,18 @@ namespace Persistence.Repositories
 
         public async Task<List<Pacientes>> GetPacientesAsync()
         {
-            return await _context.ListaPacientes.ToListAsync();
+            return await _context.ListaPacientes.Take(100).ToListAsync();
         }
 
-        public async Task<Pacientes?> GetPacienteByIdAsync(long id)
+        public async Task<List<Pacientes>> GetPacientesAsync(int TotalRegistro = 100)
         {
-            return await _context.ListaPacientes
-                .FirstOrDefaultAsync(x => x.PacienteID == id);
+            return await _context.ListaPacientes.Take(TotalRegistro).ToListAsync();
+        }
+
+        public async Task AddPacientes(Pacientes paciente)
+        {
+            _context.Add(paciente);
+            await _context.SaveChangesAsync();
         }
     }
 }
