@@ -1,0 +1,6 @@
+@Api_ExpedienteClinico_HostAddress = http://localhost:5210
+
+GET {{Api_ExpedienteClinico_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

@@ -1,0 +1,6 @@
+@Api_SeguridadCatalog_HostAddress = http://localhost:5274
+
+GET {{Api_SeguridadCatalog_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
