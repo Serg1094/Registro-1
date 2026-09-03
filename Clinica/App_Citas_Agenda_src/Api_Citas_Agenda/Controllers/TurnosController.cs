@@ -1,5 +1,8 @@
-﻿using Core.Interfaces.Repositories;
+﻿using Core.feature.Commands;
+using Core.feature.Queries;
+
 using Domain.Models;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers
@@ -8,23 +11,24 @@ namespace Api.Controllers
     [Route("[controller]")]
     public class TurnosController : ControllerBase
     {
-        private readonly ITurnos _turnosRepository;
+        private readonly IMediator _mediator;
 
-        public TurnosController(ITurnos turnosRepository)
+        public TurnosController(IMediator mediator)
         {
-            _turnosRepository = turnosRepository;
+            _mediator = mediator;
         }
 
         [HttpGet]
-        public async Task<List<Turno>> Get()
+        public async Task<List<Turno>> Get([FromQuery] GetTurnosQuery query)
         {
-            return await _turnosRepository.GetTurnosAsync();
+            return await _mediator.Send(query);
         }
 
-        [HttpGet("{id}")]
-        public async Task<Turno?> GetById(long id)
+        
+        [HttpPost]
+        public async Task<bool> Post([FromBody] AddCitasCommand command)
         {
-            return await _turnosRepository.GetTurnoByIdAsync(id);
+            return await _mediator.Send(command);
         }
     }
 }

@@ -14,13 +14,13 @@ namespace Persistence.Configs
     {
         public void Configure(EntityTypeBuilder<ExpedienteClinico> builder)
         {
-            builder.ToTable("ExpedientesClinicos");
+            builder.ToTable("Expedientes_Clinicos");
             builder.HasKey(x => x.ExpedienteID);
             builder.Property(x => x.ExpedienteID).HasColumnName("ExpedienteID").IsRequired();
             builder.Property(x => x.PacienteID).HasColumnName("PacienteID").IsRequired();
             builder.Property(x => x.NumeroExpediente).HasColumnName("NumeroExpediente").HasMaxLength(50);
             builder.Property(x => x.FechaApertura).HasColumnName("FechaApertura").IsRequired();
-            builder.Property(x => x.Descripcion).HasColumnName("Descripcion").HasMaxLength(500);
+            builder.Property(x => x.Observaciones).HasColumnName("Observaciones").HasMaxLength(500);
             builder.Property(x => x.Activo).HasColumnName("Activo").IsRequired();
         }
     }

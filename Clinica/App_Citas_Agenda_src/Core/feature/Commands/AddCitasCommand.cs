@@ -1,4 +1,4 @@
-﻿using Core.Interfaces.Repositories;
+﻿
 using Domain.Models;
 using MediatR;
 using System;
@@ -27,8 +27,8 @@ namespace Core.feature.Commands
 
     public class AddCitasCommandHandler : IRequestHandler<AddCitasCommand, bool>
     {
-        private readonly ICitas _CitasRepositories;
-        public AddCitasCommandHandler(ICitas CitasRepositories)
+        private readonly IGenericRepository<Cita> _CitasRepositories;
+        public AddCitasCommandHandler(IGenericRepository<Cita> CitasRepositories)
         {
             _CitasRepositories = CitasRepositories;
         }
@@ -47,7 +47,7 @@ namespace Core.feature.Commands
             citas.Observaciones = request.Observaciones;
             citas.UsuarioCreacionID = request.UsuarioCreacionID;
             citas.FechaCreacion = DateTime.Today;
-            await _CitasRepositories.AddCitas(citas);
+            await _CitasRepositories.AddAsync(citas);
             return true;
         }
     }

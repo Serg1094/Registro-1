@@ -11,8 +11,8 @@ namespace Domain.Models
         public long ExpedienteID { get; set; }
         public long PacienteID { get; set; }
         public string? NumeroExpediente { get; set; }
-        public DateTime FechaApertura { get; set; }
-        public string? Descripcion { get; set; }
+        public DateOnly FechaApertura { get; set; }
+        public string? Observaciones { get; set; }
         public bool Activo { get; set; }
     }
 }

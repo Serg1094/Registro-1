@@ -8,8 +8,8 @@ namespace Domain.Models
 {
     public class Sintoma
     {
-        public long SintomaID { get; set; }
-        public required string Nombre { get; set; }
+        public int SintomaID { get; set; }
+        public string? Nombre { get; set; }
         public string? Descripcion { get; set; }
         public bool Activo { get; set; }
     }

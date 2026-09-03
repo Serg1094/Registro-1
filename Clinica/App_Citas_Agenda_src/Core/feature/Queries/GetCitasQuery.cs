@@ -1,4 +1,4 @@
-﻿using Core.Interfaces.Repositories;
+﻿
 using Domain.Models;
 using MediatR;
 using System;
@@ -16,16 +16,16 @@ namespace Core.feature.Queries
 
     public class GetCitasQueryHandler : IRequestHandler<GetCitasQuery, List<Cita>>
     {
-        private readonly ICitas _citasRepository;
+        private readonly IGenericRepository<Cita> _citasRepository;
 
-        public GetCitasQueryHandler(ICitas citasRepository)
+        public GetCitasQueryHandler(IGenericRepository<Cita> citasRepository)
         {
             _citasRepository = citasRepository;
         }
 
         public async Task<List<Cita>> Handle(GetCitasQuery request, CancellationToken cancellationToken)
         {
-            return request.TotalRegistro > 0 ? await _citasRepository.GetCitasAsync(request.TotalRegistro) : await _citasRepository.GetCitasAsync();
+            return request.TotalRegistro > 0 ? await _citasRepository.GetPageAsync(request.TotalRegistro) : await _citasRepository.GetAllAsync();
         }
                 
     }

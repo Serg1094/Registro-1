@@ -8,7 +8,7 @@ namespace Domain.Models
 {
     public class Diagnostico
     {
-        public long DiagnosticoID { get; set; }
+        public int DiagnosticoID { get; set; }
         public string CodigoCIE10 { get; set; }
         public string? Nombre { get; set; }
         public string? Descripcion { get; set; }

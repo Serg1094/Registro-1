@@ -11,19 +11,19 @@ namespace Core.feature.Commands
 {
     public class AddSignosVitalesCommand : IRequest<bool>
     {
-        public long SignoVitalID { get; set; }
+        public long SignosVitalesID { get; set; }
         public long AtencionID { get; set; }
-        public DateTime FechaRegistro { get; set; }
-        public int PresionSistolica { get; set; }
-        public int PresionDiastolica { get; set; }
-        public int FrecuenciaCardiaca { get; set; }
-        public int FrecuenciaRespiratoria { get; set; }
-        public int Temperatura { get; set; }
-        public int SaturacionOxigeno { get; set; }
-        public decimal PesoKm { get; set; }
-        public decimal TallaCm { get; set; }
+        public DateTime? FechaRegistro { get; set; }
+        public decimal? PresionSistolica { get; set; }
+        public decimal? PresionDiastolica { get; set; }
+        public decimal? FrecuenciaCardiaca { get; set; }
+        public decimal? FrecuenciaRespiratoria { get; set; }
+        public decimal? Temperatura { get; set; }
+        public decimal? SaturacionOxigeno { get; set; }
+        public decimal? PesoKg { get; set; }
+        public decimal? TallaCm { get; set; }
         public decimal? IMC { get; set; }
-        public string? Observacion { get; set; }
+        public string? Observaciones { get; set; }
     }
 
     public class AddSignosVitalesCommandHandler : IRequestHandler<AddSignosVitalesCommand, bool>
@@ -36,7 +36,7 @@ namespace Core.feature.Commands
         public async Task<bool> Handle(AddSignosVitalesCommand request, CancellationToken cancellationToken)
         {
             SignoVital signosVitales = new SignoVital();
-            signosVitales.SignoVitalID = request.SignoVitalID;
+            signosVitales.SignosVitalesID = request.SignosVitalesID;
             signosVitales.AtencionID = request.AtencionID;
             signosVitales.FechaRegistro = request.FechaRegistro;
             signosVitales.PresionSistolica = request.PresionSistolica;
@@ -45,10 +45,10 @@ namespace Core.feature.Commands
             signosVitales.FrecuenciaRespiratoria = request.FrecuenciaRespiratoria;
             signosVitales.Temperatura = request.Temperatura;
             signosVitales.SaturacionOxigeno = request.SaturacionOxigeno;
-            signosVitales.PesoKm = request.PesoKm;
+            signosVitales.PesoKg = request.PesoKg;
             signosVitales.TallaCm = request.TallaCm;
             signosVitales.IMC = request.IMC;
-            signosVitales.Observacion = request.Observacion;
+            signosVitales.Observaciones = request.Observaciones;
             await _signosVitalesRepositories.AddSignoVital(signosVitales);
             return true;
         }

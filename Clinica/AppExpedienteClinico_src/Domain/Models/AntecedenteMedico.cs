@@ -12,9 +12,9 @@ namespace Domain.Models
     {
         public long AntecedenteMedicoID { get; set; }
         public long PacienteID { get; set; }
-        public required string TipoAntecedente { get; set; }
+        public string TipoAntecedente { get; set; }
         public string? Descripcion { get; set; }
-        public DateTime? FechaReferencia { get; set; }
+        public DateOnly? FechaReferencia { get; set; }
         public string? Observaciones { get; set; }
         public DateTime? FechaRegistro { get; set; }
     }

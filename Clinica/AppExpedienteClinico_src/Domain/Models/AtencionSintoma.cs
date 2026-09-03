@@ -10,9 +10,9 @@ namespace Domain.Models
     {
         public long AtencionSintomaID { get; set; }
         public long AtencionID { get; set; }
-        public long SintomaID { get; set; }
+        public int SintomaID { get; set; }
         public string? Intensidad { get; set; }
-        public int Duracion { get; set; }
+        public string? Duracion { get; set; }
         public string? Observaciones { get; set; }
         
     }

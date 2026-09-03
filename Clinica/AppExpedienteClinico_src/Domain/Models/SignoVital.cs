@@ -8,19 +8,19 @@ namespace Domain.Models
 {
     public class SignoVital
     {
-        public long SignoVitalID { get; set; }
+        public long SignosVitalesID { get; set; }
         public long AtencionID { get; set; }
-        public DateTime FechaRegistro { get; set; }
-        public int PresionSistolica { get; set; }
-        public int PresionDiastolica { get; set; }
-        public int FrecuenciaCardiaca { get; set; }
-        public int FrecuenciaRespiratoria { get; set; }
-        public int Temperatura { get; set; }
-        public int SaturacionOxigeno { get; set; }
-        public decimal PesoKm { get; set; }
-        public decimal TallaCm { get; set; }
-        public decimal? IMC { get; set; }
-        public string? Observacion { get; set; }
+        public DateTime? FechaRegistro { get; set; }
+        public Decimal? PresionSistolica { get; set; }
+        public Decimal? PresionDiastolica { get; set; }
+        public Decimal? FrecuenciaCardiaca { get; set; }
+        public Decimal? FrecuenciaRespiratoria { get; set; }
+        public Decimal? Temperatura { get; set; }
+        public Decimal? SaturacionOxigeno { get; set; }
+        public Decimal? PesoKg { get; set; }
+        public Decimal? TallaCm { get; set; }
+        public Decimal? IMC { get; set; }
+        public string? Observaciones { get; set; }
                 
     }
 }

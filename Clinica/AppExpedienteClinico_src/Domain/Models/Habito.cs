@@ -10,8 +10,9 @@ namespace Domain.Models
     {
         public long HabitoID { get; set; }
         public long PacienteID { get; set; }
-        public required string TipoHabito { get; set; }
+        public string? TipoHabito { get; set; }
         public string? Descripcion { get; set; }
+        public string? Frecuencia { get; set; }
         public bool Activo { get; set; }
     }
 }

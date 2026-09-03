@@ -14,8 +14,8 @@ namespace Core.feature.Commands
         public long ExpedienteID { get; set; }
         public long PacienteID { get; set; }
         public string? NumeroExpediente { get; set; }
-        public DateTime FechaApertura { get; set; }
-        public string? Descripcion { get; set; }
+        public DateOnly? FechaApertura { get; set; }
+        public string? Observaciones { get; set; }
         public bool Activo { get; set; }
     }
 
@@ -32,8 +32,8 @@ namespace Core.feature.Commands
             expedientes.ExpedienteID = request.ExpedienteID;
             expedientes.PacienteID = request.PacienteID;
             expedientes.NumeroExpediente = request.NumeroExpediente;
-            expedientes.FechaApertura = request.FechaApertura;
-            expedientes.Descripcion = request.Descripcion;
+            expedientes.FechaApertura = (DateOnly)request.FechaApertura;
+            expedientes.Observaciones = request.Observaciones;
             expedientes.Activo = request.Activo;
             await _expedientesRepositories.AddExpediente(expedientes);
             return true;

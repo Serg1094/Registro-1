@@ -1291,3 +1291,276 @@ GO
 CREATE INDEX IX_Auditoria_Usuario
 ON dbo.Auditoria(UsuarioID, FechaHora);
 GO
+
+/*
+
+*/
+
+/* INgresar ultimos datos */
+INSERT INTO dbo.Expedientes_Clinicos
+(
+    PacienteID,
+    NumeroExpediente,
+    FechaApertura,
+    Observaciones,
+    Activo
+)
+SELECT
+    p.PacienteID,
+    CONCAT('EXP-', RIGHT('0000' + CAST(
+        ROW_NUMBER() OVER (ORDER BY p.PacienteID) AS VARCHAR(4)
+    ), 4)),
+    CAST(GETDATE() AS DATE),
+    'Expediente clínico creado para pruebas del sistema.',
+    1
+FROM dbo.Pacientes p
+WHERE NOT EXISTS
+(
+    SELECT 1
+    FROM dbo.Expedientes_Clinicos e
+    WHERE e.PacienteID = p.PacienteID
+);
+GO
+/**/
+
+INSERT INTO dbo.Antecedentes_Medicos
+(
+    PacienteID,
+    TipoAntecedente,
+    Descripcion,
+    FechaReferencia,
+    Observaciones
+)
+SELECT
+    p.PacienteID,
+    v.TipoAntecedente,
+    v.Descripcion,
+    v.FechaReferencia,
+    v.Observaciones
+FROM
+(
+    VALUES
+    ('PAC-0001', 'Quirúrgico', 'Apendicectomía', '2018-06-15', 'Sin complicaciones.'),
+    ('PAC-0002', 'Médico', 'Asma bronquial', '2016-03-10', 'Control ocasional.'),
+    ('PAC-0003', 'Médico', 'Hipertensión arterial', '2021-01-20', 'En seguimiento médico.'),
+    ('PAC-0004', 'Quirúrgico', 'Colecistectomía', '2019-09-05', 'Evolución favorable.'),
+    ('PAC-0005', 'Médico', 'Gastritis recurrente', '2022-04-11', 'Control mediante dieta.'),
+    ('PAC-0006', 'Traumático', 'Fractura de radio', '2017-08-22', 'Recuperación completa.'),
+    ('PAC-0007', 'Médico', 'Migraña', '2020-02-14', 'Episodios ocasionales.'),
+    ('PAC-0008', 'Médico', 'Diabetes mellitus tipo 2', '2020-11-03', 'En control médico.'),
+    ('PAC-0009', 'Quirúrgico', 'Hernia inguinal', '2018-12-17', 'Cirugía sin complicaciones.'),
+    ('PAC-0010', 'Médico', 'Rinitis alérgica', '2021-05-10', 'Síntomas estacionales.')
+) v(
+    CodigoPaciente,
+    TipoAntecedente,
+    Descripcion,
+    FechaReferencia,
+    Observaciones
+)
+INNER JOIN dbo.Pacientes p
+    ON p.CodigoPaciente = v.CodigoPaciente;
+GO
+
+/**/
+
+INSERT INTO dbo.Antecedentes_Familiares
+(
+    PacienteID,
+    Parentesco,
+    Enfermedad,
+    Observaciones
+)
+SELECT
+    p.PacienteID,
+    v.Parentesco,
+    v.Enfermedad,
+    v.Observaciones
+FROM
+(
+    VALUES
+    ('PAC-0001', 'Padre', 'Hipertensión arterial', 'Antecedente familiar.'),
+    ('PAC-0002', 'Madre', 'Diabetes mellitus tipo 2', 'Antecedente familiar.'),
+    ('PAC-0003', 'Padre', 'Enfermedad cardiovascular', 'Antecedente familiar.'),
+    ('PAC-0004', 'Madre', 'Hipertensión arterial', 'Antecedente familiar.'),
+    ('PAC-0005', 'Abuelo materno', 'Diabetes mellitus', 'Antecedente familiar.'),
+    ('PAC-0006', 'Padre', 'Asma', 'Antecedente familiar.'),
+    ('PAC-0007', 'Madre', 'Migraña', 'Antecedente familiar.'),
+    ('PAC-0008', 'Padre', 'Diabetes mellitus tipo 2', 'Antecedente familiar.'),
+    ('PAC-0009', 'Madre', 'Hipertensión arterial', 'Antecedente familiar.'),
+    ('PAC-0010', 'Abuela materna', 'Osteoporosis', 'Antecedente familiar.')
+) v(
+    CodigoPaciente,
+    Parentesco,
+    Enfermedad,
+    Observaciones
+)
+INNER JOIN dbo.Pacientes p
+    ON p.CodigoPaciente = v.CodigoPaciente;
+GO
+
+/**/
+
+INSERT INTO dbo.Alergias
+(
+    PacienteID,
+    TipoAlergia,
+    Alergeno,
+    Reaccion,
+    Severidad,
+    Activa
+)
+SELECT
+    p.PacienteID,
+    v.TipoAlergia,
+    v.Alergeno,
+    v.Reaccion,
+    v.Severidad,
+    1
+FROM
+(
+    VALUES
+    ('PAC-0001', 'Medicamento', 'Penicilina', 'Erupción cutánea', 'MODERADA'),
+    ('PAC-0002', 'Alimento', 'Mariscos', 'Urticaria', 'MODERADA'),
+    ('PAC-0003', 'Medicamento', 'Ibuprofeno', 'Dolor estomacal', 'LEVE'),
+    ('PAC-0004', 'Ambiental', 'Polen', 'Estornudos y congestión', 'LEVE'),
+    ('PAC-0005', 'Alimento', 'Leche', 'Malestar gastrointestinal', 'LEVE'),
+    ('PAC-0006', 'Medicamento', 'Amoxicilina', 'Erupción cutánea', 'MODERADA'),
+    ('PAC-0007', 'Ambiental', 'Polvo', 'Congestión nasal', 'LEVE')
+) v(
+    CodigoPaciente,
+    TipoAlergia,
+    Alergeno,
+    Reaccion,
+    Severidad
+)
+INNER JOIN dbo.Pacientes p
+    ON p.CodigoPaciente = v.CodigoPaciente;
+GO
+
+/**/
+
+INSERT INTO dbo.Habitos
+(
+    PacienteID,
+    TipoHabito,
+    Descripcion,
+    Frecuencia,
+    Activo
+)
+SELECT
+    p.PacienteID,
+    v.TipoHabito,
+    v.Descripcion,
+    v.Frecuencia,
+    1
+FROM
+(
+    VALUES
+    ('PAC-0001', 'Actividad física', 'Caminata', '3 veces por semana'),
+    ('PAC-0002', 'Actividad física', 'Fútbol recreativo', '1 vez por semana'),
+    ('PAC-0003', 'Café', 'Consumo de café', '2 tazas al día'),
+    ('PAC-0004', 'Actividad física', 'Gimnasio', '4 veces por semana'),
+    ('PAC-0005', 'Alimentación', 'Dieta balanceada', 'Diaria'),
+    ('PAC-0006', 'Actividad física', 'Caminata', '5 veces por semana'),
+    ('PAC-0007', 'Café', 'Consumo de café', '1 taza al día'),
+    ('PAC-0008', 'Actividad física', 'Caminata', '3 veces por semana'),
+    ('PAC-0009', 'Alimentación', 'Dieta baja en grasas', 'Diaria'),
+    ('PAC-0010', 'Actividad física', 'Natación', '2 veces por semana')
+) v(
+    CodigoPaciente,
+    TipoHabito,
+    Descripcion,
+    Frecuencia
+)
+INNER JOIN dbo.Pacientes p
+    ON p.CodigoPaciente = v.CodigoPaciente;
+GO
+
+/**/
+
+USE ClinicaDB;
+
+INSERT INTO Diagnosticos (CodigoCIE10, Nombre, Descripcion, Activo)
+VALUES 
+('J00', 'Rinofaringitis aguda', 'Infección del tracto respiratorio superior', 1),
+('E11', 'Diabetes mellitus tipo 2', 'Enfermedad metabólica crónica', 1),
+('I10', 'Hipertensión esencial', 'Presión arterial elevada sin causa identificable', 1),
+('J45', 'Asma', 'Enfermedad inflamatoria crónica de las vías respiratorias', 1),
+('K21', 'Enfermedad por reflujo gastroesofágico', 'Reflujo del contenido gástrico al esófago', 1);
+
+/**/
+
+USE ClinicaDB;
+GO
+
+-- 1. DECLARACIÓN DE VARIABLES
+DECLARE @RolID INT;
+DECLARE @UsuarioID INT;
+DECLARE @MedicoID INT;
+DECLARE @PacienteID BIGINT; -- BIGINT según tu script de Pacientes
+DECLARE @ExpedienteID BIGINT;
+DECLARE @AtencionID BIGINT;
+
+-- 2. ASEGURAR QUE EXISTA UN ROL (Requerido por Usuarios)
+SELECT @RolID = RolID FROM dbo.Roles WHERE Nombre = 'Administrador';
+IF @RolID IS NULL
+BEGIN
+    INSERT INTO dbo.Roles (Nombre, Descripcion, Activo)
+    VALUES ('Administrador', 'Rol administrativo general', 1);
+    SET @RolID = SCOPE_IDENTITY();
+END
+
+-- 3. ASEGURAR QUE EXISTA UN USUARIO (Evita el error FK_Atenciones_Usuario)
+SELECT @UsuarioID = UsuarioID FROM dbo.Usuarios WHERE NombreUsuario = 'admin_clinica';
+IF @UsuarioID IS NULL
+BEGIN
+    INSERT INTO dbo.Usuarios (RolID, SucursalID, NombreUsuario, NombreCompleto, Email, PasswordHash, Activo)
+    VALUES (@RolID, NULL, 'admin_clinica', 'Usuario Administrador Sistema', 'admin@clinica.com', 'hash_secure_password', 1);
+    SET @UsuarioID = SCOPE_IDENTITY();
+END
+
+-- 4. ASEGURAR QUE EXISTA UN PACIENTE
+SELECT @PacienteID = PacienteID FROM dbo.Pacientes WHERE CodigoPaciente = 'PAC-0001';
+IF @PacienteID IS NULL
+BEGIN
+    INSERT INTO dbo.Pacientes (CodigoPaciente, TipoDocumento, NumeroDocumento, Nombres, Apellidos, FechaNacimiento, Sexo, Activo)
+    VALUES ('PAC-0001', 'DUI', '00000000-1', 'Juan Alberto', 'Pérez Gómez', '1990-05-15', 'M', 1);
+    SET @PacienteID = SCOPE_IDENTITY();
+END
+
+-- 5. ASEGURAR QUE EXISTA UN MÉDICO
+-- Usamos el MedicoID = 3 que vimos anteriormente, pero lo vinculamos al UsuarioID válido
+SELECT @MedicoID = MedicoID FROM dbo.Medicos WHERE CodigoMedico = 'MED-0001';
+IF @MedicoID IS NULL
+BEGIN
+    INSERT INTO dbo.Medicos (UsuarioID, CodigoMedico, Nombres, Apellidos, NumeroLicencia, Activo)
+    VALUES (@UsuarioID, 'MED-0001', 'Carlos Alberto', 'Martínez López', 'MED-ES-10001', 1);
+    SET @MedicoID = SCOPE_IDENTITY();
+END
+
+-- 6. ENCONTRAR O CREAR EL EXPEDIENTE (Evita el error UQ_Expedientes_Paciente)
+SELECT @ExpedienteID = ExpedienteID FROM Expedientes_Clinicos WHERE PacienteID = @PacienteID;
+IF @ExpedienteID IS NULL
+BEGIN
+    INSERT INTO Expedientes_Clinicos (PacienteID, NumeroExpediente, FechaApertura, Activo)
+    VALUES (@PacienteID, 'EXP-001', GETDATE(), 1);
+    SET @ExpedienteID = SCOPE_IDENTITY();
+END
+
+-- 7. INSERTAR LA ATENCIÓN usando los IDs generados dinámicamente
+INSERT INTO Atenciones (PacienteID, MedicoID, ExpedienteID, FechaInicio, MotivoConsulta, Estado, UsuarioCreacionID)
+VALUES (@PacienteID, @MedicoID, @ExpedienteID, GETDATE(), 'Dolor de cabeza severo', 1, @UsuarioID);
+SET @AtencionID = SCOPE_IDENTITY();
+
+-- 8. INSERTAR SIGNOS VITALES
+INSERT INTO Signos_Vitales (AtencionID, FechaRegistro, PresionSistolica, PresionDiastolica, FrecuenciaCardiaca, Temperatura, SaturacionOxigeno, PesoKg, TallaCm)
+VALUES (@AtencionID, GETDATE(), 120.00, 80.00, 75.00, 36.50, 98.00, 70.00, 170.00);
+
+-- 9. ALERGIAS Y ANTECEDENTES
+INSERT INTO Alergias (PacienteID, TipoAlergia, Alergeno, Reaccion, Activa, FechaRegistro)
+VALUES (@PacienteID, 'Medicamento', 'Penicilina', 'Urticaria', 1, GETDATE());
+
+INSERT INTO Antecedentes_Medicos (PacienteID, TipoAntecedente, Descripcion, FechaRegistro)
+VALUES (@PacienteID, 'Quirurgico', 'Apendicectomia 2018', GETDATE());
+
+PRINT '¡Todos los registros médicos de prueba fueron insertados con éxito!';

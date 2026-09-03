@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Repositories\CitasRepositories.cs" />
+    <Compile Remove="Repositories\ConsultoriosRepositories.cs" />
+    <Compile Remove="Repositories\TurnoRepositories.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Core\Core.csproj" />
     <ProjectReference Include="..\Domain\Domain.csproj" />
   </ItemGroup>

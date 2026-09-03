@@ -1,5 +1,8 @@
-﻿using Core.Interfaces.Repositories;
+﻿using Core.feature.Commands;
+using Core.feature.Queries;
+
 using Domain.Models;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers
@@ -8,23 +11,24 @@ namespace Api.Controllers
     [Route("[controller]")]
     public class ConsultoriosController : ControllerBase
     {
-        private readonly IConsultorios _consultoriosRepository;
+        private readonly IMediator _mediator;
 
-        public ConsultoriosController(IConsultorios consultoriosRepository)
+        public ConsultoriosController(IMediator mediator)
         {
-            _consultoriosRepository = consultoriosRepository;
+            _mediator = mediator;
         }
 
         [HttpGet]
-        public async Task<List<Consultorio>> Get()
+        public async Task<List<Consultorio>> Get([FromQuery] GetConsultoriosQuery query)
         {
-            return await _consultoriosRepository.GetConsultoriosAsync();
+            return await _mediator.Send(query);
         }
 
-        [HttpGet("{id}")]
-        public async Task<Consultorio?> GetById(int id)
+        
+        [HttpPost]
+        public async Task<bool> Post([FromBody] AddConsultoriosCommand command)
         {
-            return await _consultoriosRepository.GetConsultorioByIdAsync(id);
+            return await _mediator.Send(command);
         }
     }
 }

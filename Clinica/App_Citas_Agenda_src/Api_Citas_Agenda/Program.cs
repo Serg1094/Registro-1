@@ -8,6 +8,7 @@ builder.Services.AddOpenApi();
 
 /* Inyeccion del servicio Persistencia */
 builder.Services.AddPersistence();
+builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
 /* */
 builder.Services.AddCore();

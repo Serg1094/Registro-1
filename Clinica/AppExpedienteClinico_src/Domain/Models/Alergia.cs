@@ -10,8 +10,8 @@ namespace Domain.Models
     {
         public long AlergiaID { get; set; }
         public long PacienteID { get; set; }
-        public string TipoAlergia { get; set; }
-        public string Alergeno { get; set; }
+        public string? TipoAlergia { get; set; }
+        public string? Alergeno { get; set; }
         public string? Reaccion { get; set; }
         public string? Severidad { get; set; }
         public bool Activa { get; set; }

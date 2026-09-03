@@ -11,7 +11,7 @@ namespace Core.feature.Commands
 {
     public class AddDiagnosticoCommand : IRequest<bool>
     {
-        public long DiagnosticoID { get; set; }
+        public int DiagnosticoID { get; set; }
         public required string CodigoCIE10 { get; set; }
         public required string Nombre { get; set; }
         public string? Descripcion { get; set; }

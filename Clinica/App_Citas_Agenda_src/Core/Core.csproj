@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Interfaces\Repositories\ICitas.cs" />
+    <Compile Remove="Interfaces\Repositories\IConsultorios.cs" />
+    <Compile Remove="Interfaces\Repositories\ITurno.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="MediatR" Version="12.5.0" />
   </ItemGroup>
 
