@@ -9,6 +9,7 @@
   <ItemGroup>
     <Compile Remove="Interfaces\Repositories\ICitas.cs" />
     <Compile Remove="Interfaces\Repositories\IConsultorios.cs" />
+    <Compile Remove="Interfaces\Repositories\IGenericRepository1.cs" />
     <Compile Remove="Interfaces\Repositories\ITurno.cs" />
   </ItemGroup>
 
@@ -17,7 +18,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\GenericRepository\GenericRepository.csproj" />
     <ProjectReference Include="..\Domain\Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Interfaces\Repositories\" />
   </ItemGroup>
 
 </Project>

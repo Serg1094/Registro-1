@@ -7,11 +7,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-public class GenericRepository<T> : IGenericRepository<T> where T : class
+public class GenericRepository1<T> : IGenericRepository<T> where T : class
 {
     private readonly ApplicationDbContext _context;
 
-    public GenericRepository(ApplicationDbContext context)
+    public GenericRepository1(ApplicationDbContext context)
     {
         _context = context;
     }

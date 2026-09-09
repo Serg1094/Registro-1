@@ -23,6 +23,7 @@ namespace Persistence
             services.AddTransient<ITurnos, TurnosRepository>();
             services.AddTransient<IConsultorios, ConsultoriosRepository>();*/
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+            services.AddScoped<DbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());
 
             return services;
         }

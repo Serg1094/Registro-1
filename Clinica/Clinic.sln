@@ -113,6 +113,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Externals", "AppSeguridadCa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api_SeguridadCatalog", "AppSeguridadCatalog_src\Api_SeguridadCatalog\Api_SeguridadCatalog.csproj", "{6C9E6A3C-FD1E-4D57-9797-5DD77E0CF050}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GenericR", "GenericR", "{10688398-616C-4350-BBDC-4B40F010C583}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GenericRepository", "GenericRepository\GenericRepository.csproj", "{AFF7A8AF-6804-4E9E-B940-E47BD32600F1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -219,6 +223,10 @@ Global
 		{6C9E6A3C-FD1E-4D57-9797-5DD77E0CF050}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6C9E6A3C-FD1E-4D57-9797-5DD77E0CF050}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6C9E6A3C-FD1E-4D57-9797-5DD77E0CF050}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AFF7A8AF-6804-4E9E-B940-E47BD32600F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AFF7A8AF-6804-4E9E-B940-E47BD32600F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AFF7A8AF-6804-4E9E-B940-E47BD32600F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AFF7A8AF-6804-4E9E-B940-E47BD32600F1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -274,6 +282,7 @@ Global
 		{A3A389FB-08DC-48A9-934D-80407BEA65E0} = {286E7309-4EFD-469D-8143-B2F4183353E7}
 		{B3DE5A0F-766F-4DDC-A3A9-94DB6FFD3C20} = {0E36B757-C8DC-49D1-A5A9-03634C7AFFAD}
 		{6C9E6A3C-FD1E-4D57-9797-5DD77E0CF050} = {836D5840-10D1-4DAE-BF94-780CE79665BA}
+		{AFF7A8AF-6804-4E9E-B940-E47BD32600F1} = {10688398-616C-4350-BBDC-4B40F010C583}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E0B47BB8-F749-4776-AF4B-B57F9583EBDF}

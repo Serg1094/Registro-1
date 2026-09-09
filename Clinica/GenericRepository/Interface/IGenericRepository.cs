@@ -13,5 +13,8 @@ public interface IGenericRepository<T> where T : class
     Task<List<T>> GetPageAsync(int TotalRegistro = 100);
 
     Task<T?> GetByIdAsync(int id);
-    
+
+    Task<bool> UpdateAsync(T entity);
+    Task<bool> DeleteAsync(object id);
+
 }
