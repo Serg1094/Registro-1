@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Domain.Models;
-using Core.Interfaces.Repositories;
+/*us*/
 
 namespace Core.feature.Commands
 {
@@ -28,8 +28,8 @@ namespace Core.feature.Commands
 
     public class AddAtencionCommandHandler : IRequestHandler<AddAtencionCommand, bool>
     {
-        private readonly IAtenciones _AtencionesRepositories;
-        public AddAtencionCommandHandler(IAtenciones AtencionesRepositories)
+        private readonly IGenericRepository<Atenciones> _AtencionesRepositories;
+        public AddAtencionCommandHandler(IGenericRepository<Atenciones> AtencionesRepositories)
         {
             _AtencionesRepositories = AtencionesRepositories;
         }
@@ -49,7 +49,7 @@ namespace Core.feature.Commands
             atencion.Observaciones = request.Observaciones;
             atencion.Estado = request.Estado;
             atencion.UsuarioCreacionID = request.UsuarioCreacionID;
-            await _AtencionesRepositories.AddAtenciones(atencion);
+            await _AtencionesRepositories.AddAsync(atencion);
             return true;
         }
     }

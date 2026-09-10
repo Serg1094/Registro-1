@@ -1,9 +1,9 @@
-﻿using Core.Interfaces.Repositories;
+﻿
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Persistence.Data;
-using Persistence.Repositories;
+/*using Persistence.Repositories;*/
 
 namespace Persistence
 {
@@ -18,10 +18,12 @@ namespace Persistence
             services.AddDbContext<ApplicationDbContext>(option =>
                 option.UseSqlServer(configuration["sql:cx"]));
 
-            services.AddTransient<IExpedientes, ExpedientesRepository>();
+            /*services.AddTransient<IExpedientes, ExpedientesRepository>();
             services.AddTransient<IAtenciones, AtencionesRepository>();
             services.AddTransient<IDiagnosticos, DiagnosticosRepository>();
-            services.AddTransient<ISignosVitales, SignosVitalesRepository>();
+            services.AddTransient<ISignosVitales, SignosVitalesRepository>();*/
+            services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+            services.AddScoped<DbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());
 
             return services;
         }

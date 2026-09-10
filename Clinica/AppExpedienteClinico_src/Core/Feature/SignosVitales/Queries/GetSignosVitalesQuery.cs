@@ -1,4 +1,4 @@
-﻿using Core.Interfaces.Repositories;
+﻿
 using Domain.Models;
 using MediatR;
 using System;
@@ -16,16 +16,16 @@ namespace Core.feature.Queries
 
     public class GetSignosVitalesQueryHandler : IRequestHandler<GetSignosVitalesQuery, List<SignoVital>>
     {
-        private readonly ISignosVitales _signosVitalesRepository;
+        private readonly IGenericRepository<SignoVital> _signosVitalesRepository;
 
-        public GetSignosVitalesQueryHandler(ISignosVitales signosVitalesRepository)
+        public GetSignosVitalesQueryHandler(IGenericRepository<SignoVital> signosVitalesRepository)
         {
             _signosVitalesRepository = signosVitalesRepository;
         }
 
         public async Task<List<SignoVital>> Handle(GetSignosVitalesQuery request, CancellationToken cancellationToken)
         {
-            return request.TotalRegistro > 0 ? await _signosVitalesRepository.GetSignosVitalesAsync(request.TotalRegistro) : await _signosVitalesRepository.GetSignosVitalesAsync();
+            return request.TotalRegistro > 0 ? await _signosVitalesRepository.GetPageAsync(request.TotalRegistro) : await _signosVitalesRepository.GetAllAsync();
         }
 
     }

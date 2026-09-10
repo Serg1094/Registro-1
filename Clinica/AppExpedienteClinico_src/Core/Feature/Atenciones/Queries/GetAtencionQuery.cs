@@ -1,4 +1,4 @@
-﻿using Core.Interfaces.Repositories;
+﻿
 using Domain.Models;
 using MediatR;
 using System;
@@ -16,16 +16,16 @@ namespace Core.feature.Queries
 
     public class GetAtencionesQueryHandler : IRequestHandler<GetAtencionesQuery, List<Atenciones>>
     {
-        private readonly IAtenciones _atencionesRepository;
+        private readonly IGenericRepository<Atenciones> _atencionesRepository;
 
-        public GetAtencionesQueryHandler(IAtenciones atencionesRepository)
+        public GetAtencionesQueryHandler(IGenericRepository<Atenciones> atencionesRepository)
         {
             _atencionesRepository = atencionesRepository;
         }
 
         public async Task<List<Atenciones>> Handle(GetAtencionesQuery request, CancellationToken cancellationToken)
         {
-            return request.TotalRegistro > 0 ? await _atencionesRepository.GetAtencionesAsync(request.TotalRegistro) : await _atencionesRepository.GetAtencionesAsync();
+            return request.TotalRegistro > 0 ? await _atencionesRepository.GetPageAsync(request.TotalRegistro) : await _atencionesRepository.GetAllAsync();
         }
         
     }

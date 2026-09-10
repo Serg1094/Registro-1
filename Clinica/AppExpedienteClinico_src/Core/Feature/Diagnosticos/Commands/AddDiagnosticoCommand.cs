@@ -1,4 +1,4 @@
-﻿using Core.Interfaces.Repositories;
+﻿
 using Domain.Models;
 using MediatR;
 using System;
@@ -20,8 +20,8 @@ namespace Core.feature.Commands
 
     public class AddDiagnosticoCommandHandler : IRequestHandler<AddDiagnosticoCommand, bool>
     {
-        private readonly IDiagnosticos _diagnosticosRepositories;
-        public AddDiagnosticoCommandHandler(IDiagnosticos diagnosticosRepositories)
+        private readonly IGenericRepository<Diagnostico> _diagnosticosRepositories;
+        public AddDiagnosticoCommandHandler(IGenericRepository<Diagnostico> diagnosticosRepositories)
         {
             _diagnosticosRepositories = diagnosticosRepositories;
         }
@@ -33,7 +33,7 @@ namespace Core.feature.Commands
             diagnosticos.Nombre = request.Nombre;
             diagnosticos.Descripcion = request.Descripcion;
             diagnosticos.Activo = request.Activo;
-            await _diagnosticosRepositories.AddDiagnostico(diagnosticos);
+            await _diagnosticosRepositories.AddAsync(diagnosticos);
             return true;
         }
     }

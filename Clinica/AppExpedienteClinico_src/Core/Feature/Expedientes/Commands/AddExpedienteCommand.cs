@@ -1,4 +1,4 @@
-﻿using Core.Interfaces.Repositories;
+﻿
 using Domain.Models;
 using MediatR;
 using System;
@@ -21,8 +21,8 @@ namespace Core.feature.Commands
 
     public class AddExpedienteCommandHandler : IRequestHandler<AddExpedienteCommand, bool>
     {
-        private readonly IExpedientes _expedientesRepositories;
-        public AddExpedienteCommandHandler(IExpedientes expedientesRepositories)
+        private readonly IGenericRepository<ExpedienteClinico> _expedientesRepositories;
+        public AddExpedienteCommandHandler(IGenericRepository<ExpedienteClinico> expedientesRepositories)
         {
             _expedientesRepositories = expedientesRepositories;
         }
@@ -35,7 +35,7 @@ namespace Core.feature.Commands
             expedientes.FechaApertura = (DateOnly)request.FechaApertura;
             expedientes.Observaciones = request.Observaciones;
             expedientes.Activo = request.Activo;
-            await _expedientesRepositories.AddExpediente(expedientes);
+            await _expedientesRepositories.AddAsync(expedientes);
             return true;
         }
     }

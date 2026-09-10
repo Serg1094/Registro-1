@@ -1,4 +1,4 @@
-﻿using Core.Interfaces.Repositories;
+﻿
 using Domain.Models;
 using MediatR;
 using System;
@@ -16,16 +16,16 @@ namespace Core.feature.Queries
 
     public class GetDiagnosticosQueryHandler : IRequestHandler<GetDiagnosticosQuery, List<Diagnostico>>
     {
-        private readonly IDiagnosticos _diagnosticosRepository;
+        private readonly IGenericRepository<Diagnostico> _diagnosticosRepository;
 
-        public GetDiagnosticosQueryHandler(IDiagnosticos diagnosticosRepository)
+        public GetDiagnosticosQueryHandler(IGenericRepository<Diagnostico> diagnosticosRepository)
         {
             _diagnosticosRepository = diagnosticosRepository;
         }
 
         public async Task<List<Diagnostico>> Handle(GetDiagnosticosQuery request, CancellationToken cancellationToken)
         {
-            return request.TotalRegistro > 0 ? await _diagnosticosRepository.GetDiagnosticoAsync(request.TotalRegistro) : await _diagnosticosRepository.GetDiagnosticoAsync();
+            return request.TotalRegistro > 0 ? await _diagnosticosRepository.GetPageAsync(request.TotalRegistro) : await _diagnosticosRepository.GetAllAsync();
         }
 
     }

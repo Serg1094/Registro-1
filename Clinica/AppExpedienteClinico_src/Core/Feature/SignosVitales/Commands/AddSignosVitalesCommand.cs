@@ -1,4 +1,4 @@
-﻿using Core.Interfaces.Repositories;
+﻿
 using Domain.Models;
 using MediatR;
 using System;
@@ -28,8 +28,8 @@ namespace Core.feature.Commands
 
     public class AddSignosVitalesCommandHandler : IRequestHandler<AddSignosVitalesCommand, bool>
     {
-        private readonly ISignosVitales _signosVitalesRepositories;
-        public AddSignosVitalesCommandHandler(ISignosVitales signosVitalesRepositories)
+        private readonly IGenericRepository<SignoVital> _signosVitalesRepositories;
+        public AddSignosVitalesCommandHandler(IGenericRepository<SignoVital> signosVitalesRepositories)
         {
             _signosVitalesRepositories = signosVitalesRepositories;
         }
@@ -49,7 +49,7 @@ namespace Core.feature.Commands
             signosVitales.TallaCm = request.TallaCm;
             signosVitales.IMC = request.IMC;
             signosVitales.Observaciones = request.Observaciones;
-            await _signosVitalesRepositories.AddSignoVital(signosVitales);
+            await _signosVitalesRepositories.AddAsync(signosVitales);
             return true;
         }
     }

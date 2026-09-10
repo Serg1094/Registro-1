@@ -1,6 +1,6 @@
 ﻿using Core.feature.Commands;
 using Core.feature.Queries;
-using Core.Interfaces.Repositories;
+
 using Domain.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
