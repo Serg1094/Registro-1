@@ -1,10 +1,12 @@
-﻿using Core.feature.Commands;
+﻿using Core.Common;
+using Core.feature.Commands;
 using Core.feature.Queries;
 
 using Domain.Models;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using Core.Common;
 
 namespace Api.Controllers
 {
@@ -38,6 +40,11 @@ namespace Api.Controllers
             return await _mediator.Send(command);
         }
 
-        
+        [HttpGet("paged")]
+        public async Task<PagedDto<List<Cita>>> GetPaged([FromQuery] GetCitasPagedQuery query)
+        {
+            return await _mediator.Send(query);
+        }
+
     }
 }   

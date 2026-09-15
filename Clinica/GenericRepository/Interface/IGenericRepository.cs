@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Dynamic.Core;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,5 +21,14 @@ public interface IGenericRepository<T> where T : class
 
     Task<T> UpdateAsync(T entity);
     Task<T> DeleteAsync(T entity);
+
+
+    Task<PagedResult<T>> GetPagedAsync(
+        int pageNumber,
+        int pageSize,
+        Expression<Func<T, bool>>? filter = null,
+        Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null,
+        bool asNoTracking = true,
+        CancellationToken cancellationToken = default);
 
 }

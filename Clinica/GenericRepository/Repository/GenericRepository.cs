@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore.Query.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Dynamic.Core;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,7 +23,9 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
         ArgumentNullException.ThrowIfNull(entity);
         await _dbSet.AddAsync(entity);
-        
+        await _context.SaveChangesAsync();
+
+
     }
 
     /* Buscar por ID*/
@@ -63,6 +66,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
                 _dbSet.Attach(entity);
             }
             _dbSet.Remove(entity);
+            await _context.SaveChangesAsync();
             return await Task.FromResult(entity);
         }
     }
@@ -76,7 +80,34 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
             _dbSet.Attach(entity);
         }
         _context.Entry(entity).State = EntityState.Modified;
+        await _context.SaveChangesAsync();
         return await Task.FromResult(entity);
     }
 
+    public async Task<PagedResult<T>> GetPagedAsync(int pageNumber,int pageSize,Expression<Func<T, bool>>? filter = null,Func<IQueryable<T>, IOrderedQueryable<T>>? 
+        orderBy = null,bool asNoTracking = true, CancellationToken cancellationToken = default)
+    {
+        if (pageNumber < 1) throw new ArgumentOutOfRangeException(nameof(pageNumber), "pageNumber debe ser 1 o mayor.");
+        if (pageSize < 1) throw new ArgumentOutOfRangeException(nameof(pageSize), "pageSize debe ser 1 o mayor.");
+
+        IQueryable<T> query = asNoTracking ? _dbSet.AsNoTracking() : _dbSet;
+
+        if (filter != null)
+            query = query.Where(filter);
+
+        int totalRecords = await query.CountAsync(cancellationToken);
+
+        query = orderBy != null ? orderBy(query) : query;
+        query = query.Skip((pageNumber - 1) * pageSize).Take(pageSize);
+
+        var data = await query.ToListAsync(cancellationToken);
+
+        return new PagedResult<T>
+        {
+            Data = data,
+            TotalRecords = totalRecords,
+            PageSize = pageSize,
+            CurrentPage = pageNumber
+        };
+    }
 }
