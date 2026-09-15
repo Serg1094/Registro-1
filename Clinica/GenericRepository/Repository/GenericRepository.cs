@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,59 +10,73 @@ using System.Threading.Tasks;
 public class GenericRepository<T> : IGenericRepository<T> where T : class
 {
     private readonly DbContext _context;
-
+    private readonly DbSet<T> _dbSet;
     public GenericRepository(DbContext context)
     {
         _context = context;
+        _dbSet = context.Set<T>();
     }
-    public async Task<List<T>> GetAllAsync()
-    {
-        return await _context.Set<T>().ToListAsync();
-    }
+
     /* Agregar un nuevo registro */
     public async Task AddAsync(T entity)
     {
-        await _context.Set<T>().AddAsync(entity);
-        await _context.SaveChangesAsync();
-        /*return entity*/
+        ArgumentNullException.ThrowIfNull(entity);
+        await _dbSet.AddAsync(entity);
+        
     }
 
-    public async Task<List<T>> GetPageAsync(int TotalRegistro = 100)
-    {
-        return await _context.Set<T>().Take(TotalRegistro).ToListAsync();
-    }
-
+    /* Buscar por ID*/
     public async Task<T?> GetByIdAsync(object id, CancellationToken cancellationToken = default)
     {
-        return await _context.Set<T>().FindAsync(new object[] { id }, cancellationToken);
+        ArgumentNullException.ThrowIfNullOrEmpty(nameof(id));
+        return await _dbSet.FindAsync(new[] { id }, cancellationToken);
     }
 
-    public async Task<bool> DeleteAsync(T entity)
+    /* Obtener todos los registros */
+    public async Task<List<T>> GetAllAsync()
     {
+        return await _dbSet.ToListAsync();
+    }
+
+    /* Obtener registros paginados */
+    public async Task<List<T>> GetPageAsync(int TotalRegistro = 100)
+    {
+        return await _dbSet.Take(TotalRegistro).ToListAsync();
+    }
         
-        if (entity == null)
-            return false;
-
-        _context.Set<T>().Remove(entity);
-        var result = await _context.SaveChangesAsync();
-        return result > 0;
-    }
-
-    public async Task<bool> UpdateAsync(T entity)
-    {
-        _context.Set<T>().Update(entity);
-        var result = await _context.SaveChangesAsync();
-        return result > 0;
-    }
-
+    /* Obtener un registro por filtro */
     public async Task<T?> GetOneAsync(Expression<Func<T, bool>> filter, bool asNoTracking = true, CancellationToken cancellationToken = default)
     {
-        IQueryable<T> query = _context.Set<T>();
-        if (asNoTracking)
-        {
-            query = query.AsNoTracking();
-        }
+        ArgumentNullException.ThrowIfNull(filter);
+        IQueryable<T> query = _dbSet;
         return await query.FirstOrDefaultAsync(filter, cancellationToken);
+    }
+
+    /* Eliminar un registro */
+    public async Task<T> DeleteAsync(T entity)
+    {
+        ArgumentNullException.ThrowIfNull(entity);
+        
+        {
+            if (_context.Entry(entity).State == EntityState.Detached)
+            {
+                _dbSet.Attach(entity);
+            }
+            _dbSet.Remove(entity);
+            return await Task.FromResult(entity);
+        }
+    }
+
+    /* Actualizar un registro */
+    public async Task<T> UpdateAsync(T entity)
+    {
+        ArgumentNullException.ThrowIfNull(entity);
+        if (_context.Entry(entity).State == EntityState.Detached)
+        {
+            _dbSet.Attach(entity);
+        }
+        _context.Entry(entity).State = EntityState.Modified;
+        return await Task.FromResult(entity);
     }
 
 }

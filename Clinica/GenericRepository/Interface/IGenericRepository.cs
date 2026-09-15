@@ -18,7 +18,7 @@ public interface IGenericRepository<T> where T : class
     /* Buscar por filtro */
     Task<T?> GetOneAsync(Expression<Func<T, bool>> filter, bool asNoTracking = true, CancellationToken cancellationToken = default);
 
-    Task<bool> UpdateAsync(T entity);
-    Task<bool> DeleteAsync(T entity);
+    Task<T> UpdateAsync(T entity);
+    Task<T> DeleteAsync(T entity);
 
 }

@@ -20,6 +20,17 @@ namespace Core.feature.Commands
         public DeleteConsultorioCommandHandler(IGenericRepository<Consultorio> repo) => _repo = repo;
 
         public async Task<bool> Handle(DeleteConsultorioCommand request, CancellationToken cancellationToken)
-            => await _repo.DeleteAsync(request.Id);
+        {
+            var consultorio = await _repo.GetByIdAsync(request.Id);
+
+            if (consultorio == null)
+            {
+                return false;
+            }
+
+            await _repo.DeleteAsync(consultorio);
+
+            return true;
+        }
     }
 }

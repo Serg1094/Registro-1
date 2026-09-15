@@ -20,6 +20,17 @@ namespace Core.feature.Commands
         public DeleteCitaCommandHandler(IGenericRepository<Cita> repo) => _repo = repo;
 
         public async Task<bool> Handle(DeleteCitaCommand request, CancellationToken cancellationToken)
-            => await _repo.DeleteAsync(request.Id);
+        {
+            var cita = await _repo.GetByIdAsync(request.Id);
+
+            if (cita == null)
+            {
+                return false;
+            }
+
+            await _repo.DeleteAsync(cita);
+
+            return true;
+        }
     }
 }

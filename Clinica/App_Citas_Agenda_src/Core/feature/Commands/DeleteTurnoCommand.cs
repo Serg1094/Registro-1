@@ -19,6 +19,17 @@ namespace Core.feature.Commands
 
         public DeleteTurnoCommandHandler(IGenericRepository<Turno> repo) => _repo = repo;
         public async Task<bool> Handle(DeleteTurnoCommand request, CancellationToken cancellationToken)
-            => await _repo.DeleteAsync(request.Id);
+        {
+            var turno = await _repo.GetByIdAsync(request.Id);
+
+            if (turno == null)
+            {
+                return false;
+            }
+
+            await _repo.DeleteAsync(turno);
+
+            return true;
+        }
     }
 }
