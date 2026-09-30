@@ -46,5 +46,11 @@ namespace Api.Controllers
             return await _mediator.Send(query);
         }
 
+        [HttpPost("rango")]
+        public async Task<bool> PostRango([FromBody] AddCitasRangeCommand command)
+        {
+            return await _mediator.Send(command);
+        }
+
     }
 }   

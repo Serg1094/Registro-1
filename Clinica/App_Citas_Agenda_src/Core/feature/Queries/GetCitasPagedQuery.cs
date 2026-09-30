@@ -15,6 +15,7 @@ namespace Core.feature.Queries
         public int PageNumber { get; set; } = 1;
         public int PageSize { get; set; } = 10;
         public string? Filtro { get; set; }
+        public string? Orden { get; set; }
     }
 
     public class GetCitasPagedQueryHandler : IRequestHandler<GetCitasPagedQuery, PagedDto<List<Cita>>>
@@ -35,7 +36,8 @@ namespace Core.feature.Queries
             var resultado = await _citasRepository.GetPagedAsync(
                 request.PageNumber,
                 request.PageSize,
-                filtro);
+                filtro,
+                request.Orden);
 
             return new PagedDto<List<Cita>>(
                 resultado.TotalRecords,

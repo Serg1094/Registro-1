@@ -110,4 +110,50 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
             CurrentPage = pageNumber
         };
     }
+
+    public async Task<PagedResult<T>> GetPagedAsync(
+       int pageNumber,
+       int pageSize,
+       Expression<Func<T, bool>>? filter = null,
+       string? orderBy = null,
+       bool asNoTracking = true,
+       CancellationToken cancellationToken = default)
+    {
+        if (pageNumber < 1) throw new ArgumentOutOfRangeException(nameof(pageNumber), "pageNumber debe ser 1 o mayor.");
+        if (pageSize < 1) throw new ArgumentOutOfRangeException(nameof(pageSize), "pageSize debe ser 1 o mayor.");
+
+        IQueryable<T> query = asNoTracking ? _dbSet.AsNoTracking() : _dbSet;
+
+        if (filter != null)
+            query = query.Where(filter);
+
+        int totalRecords = await query.CountAsync(cancellationToken);
+
+        // ORDENAMIENTO DINÁMICO: recibe algo como "FechaHoraInicio desc" o "MedicoID asc"
+        if (!string.IsNullOrWhiteSpace(orderBy))
+            query = query.OrderBy(orderBy);   // extensión de System.Linq.Dynamic.Core
+
+        query = query.Skip((pageNumber - 1) * pageSize).Take(pageSize);
+
+        var data = await query.ToListAsync(cancellationToken);
+
+        return new PagedResult<T>
+        {
+            Data = data,
+            TotalRecords = totalRecords,
+            PageSize = pageSize,
+            CurrentPage = pageNumber
+        };
+    }
+
+    // --- NUEVO: guardar una lista completa de entidades de un jalón ---
+    public async Task AddRangeAsync(List<T> entities)
+    {
+        ArgumentNullException.ThrowIfNull(entities);
+        if (entities.Count == 0)
+            return;
+
+        await _dbSet.AddRangeAsync(entities);
+        await _context.SaveChangesAsync();
+    }
 }
